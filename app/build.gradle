@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.android.databinding'
 apply plugin: 'com.neenbedankt.android-apt'
 
 android {
@@ -44,4 +45,9 @@ dependencies {
 
     // Butterknife
     compile 'com.jakewharton:butterknife:7.0.1'
+
+    // Data Binding -- replaces Butterknife
+    apt 'com.android.databinding:compiler:1.0-rc1'
+    compile 'com.android.support:recyclerview-v7:22.2.1'
+
 }

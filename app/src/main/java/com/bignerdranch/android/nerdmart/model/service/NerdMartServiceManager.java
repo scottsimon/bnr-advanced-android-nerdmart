@@ -17,6 +17,7 @@ package com.bignerdranch.android.nerdmart.model.service;
 
 import com.bignerdranch.android.nerdmart.model.DataStore;
 import com.bignerdranch.android.nerdmartservice.service.NerdMartServiceInterface;
+import com.bignerdranch.android.nerdmartservice.service.payload.Cart;
 import com.bignerdranch.android.nerdmartservice.service.payload.Product;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
@@ -42,6 +43,8 @@ public class NerdMartServiceManager {
     mDataStore = dataStore;
   }
 
+  //region Public methods
+
   public Observable<Boolean> authenticate(String username, String password) {
 //    // Standard implementation
 //    return mServiceInterface.authenticate(username, password)
@@ -60,7 +63,8 @@ public class NerdMartServiceManager {
 //        .observeOn(AndroidSchedulers.mainThread());
 
     // Java 8 Lambda implementation -- alternate 2
-    return mServiceInterface.authenticate(username, password)
+    return mServiceInterface
+        .authenticate(username, password)
         .doOnNext(mDataStore::setCachedUser)
         .map(user -> user != null)
         .compose(applySchedulers()); // replace subscribeOn()/observeOn()
@@ -74,12 +78,32 @@ public class NerdMartServiceManager {
 //        .subscribeOn(Schedulers.io())
 //        .observeOn(AndroidSchedulers.mainThread());
 
-    return getToken().flatMap(mServiceInterface::requestProducts)
+    return getToken()
+        .flatMap(mServiceInterface::requestProducts)
         .doOnNext(mDataStore::setCachedProducts)
         .flatMap(Observable::from)
         .compose(applySchedulers()); // replace subscribeOn()/observeOn()
   }
 
+  public Observable<Cart> getCart() {
+    return getToken()
+        .flatMap(mServiceInterface::fetchUserCart)
+        .doOnNext(mDataStore::setCachedCart)
+        .compose(applySchedulers());
+  }
+
+  public Observable<Boolean> postProductToCart(final Product product) {
+    return getToken()
+        .flatMap(uuid -> mServiceInterface.addProductToCart(uuid, product))
+        .compose(applySchedulers());
+  }
+
+  public Observable<Boolean> signout() {
+    mDataStore.clearCache();
+    return mServiceInterface.signout();
+  }
+
+  //endregion Public methods
   //region Private methods
 
   private Observable<UUID> getToken() {
