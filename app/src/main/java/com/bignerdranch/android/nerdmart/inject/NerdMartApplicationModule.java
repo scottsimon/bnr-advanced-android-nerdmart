@@ -16,20 +16,13 @@
 package com.bignerdranch.android.nerdmart.inject;
 
 import android.content.Context;
-import com.bignerdranch.android.nerdmart.model.DataStore;
-import com.bignerdranch.android.nerdmart.model.service.NerdMartServiceManager;
-import com.bignerdranch.android.nerdmart.viewmodel.NerdMartViewModel;
-import com.bignerdranch.android.nerdmartservice.service.NerdMartService;
-import com.bignerdranch.android.nerdmartservice.service.NerdMartServiceInterface;
 import dagger.Module;
 import dagger.Provides;
-
-import javax.inject.Singleton;
 
 /**
  * Created by scotts on 10/20/15.
  */
-@Module
+@Module(includes = { NerdMartCommonModule.class, NerdMartServiceModule.class })
 public class NerdMartApplicationModule {
 
   private Context mApplicationContext;
@@ -38,26 +31,31 @@ public class NerdMartApplicationModule {
     mApplicationContext = applicationContext;
   }
 
-  @Provides
-  NerdMartServiceInterface providesNerdMartServiceInterface() {
-    return new NerdMartService();
-  }
+//  @Provides
+//  NerdMartServiceInterface providesNerdMartServiceInterface() {
+//    return new NerdMartService();
+//  }
+//
+//  @Provides
+//  @Singleton
+//  NerdMartServiceManager providesNerdMartServiceManager(NerdMartServiceInterface serviceInterface, DataStore dataStore) {
+//    return new NerdMartServiceManager(serviceInterface, dataStore);
+//  }
+//
+//  @Provides
+//  NerdMartViewModel providesNerdMartViewModel(DataStore dataStore) {
+//    return new NerdMartViewModel(mApplicationContext, dataStore.getCachedCart(), dataStore.getCachedUser());
+//  }
+//
+//  @Provides
+//  @Singleton
+//  DataStore providesDataStore() {
+//    return new DataStore();
+//  }
 
   @Provides
-  @Singleton
-  NerdMartServiceManager providesNerdMartServiceManager(NerdMartServiceInterface serviceInterface, DataStore dataStore) {
-    return new NerdMartServiceManager(serviceInterface, dataStore);
-  }
-
-  @Provides
-  NerdMartViewModel providesNerdMartViewModel(DataStore dataStore) {
-    return new NerdMartViewModel(mApplicationContext, dataStore.getCachedCart(), dataStore.getCachedUser());
-  }
-
-  @Provides
-  @Singleton
-  DataStore providesDataStore() {
-    return new DataStore();
+  public Context providesContext() {
+    return mApplicationContext;
   }
 
 }

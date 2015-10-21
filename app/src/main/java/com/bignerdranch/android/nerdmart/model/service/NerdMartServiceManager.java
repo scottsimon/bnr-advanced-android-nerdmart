@@ -20,7 +20,7 @@ import com.bignerdranch.android.nerdmartservice.service.NerdMartServiceInterface
 import com.bignerdranch.android.nerdmartservice.service.payload.Cart;
 import com.bignerdranch.android.nerdmartservice.service.payload.Product;
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
+import rx.Scheduler;
 import rx.schedulers.Schedulers;
 
 import java.util.UUID;
@@ -31,18 +31,24 @@ import java.util.UUID;
 public class NerdMartServiceManager {
 
   private NerdMartServiceInterface mServiceInterface;
-
   private DataStore mDataStore;
+  private Scheduler mScheduler;
 
   private final Observable.Transformer<Observable, Observable> mSchedulersTransformer =
-      observable -> observable.subscribeOn(Schedulers.newThread())
-          .observeOn(AndroidSchedulers.mainThread());
+      observable -> observable
+          .subscribeOn(Schedulers.newThread())
+//          .observeOn(AndroidSchedulers.mainThread());
+          .observeOn(mScheduler);
 
-  public NerdMartServiceManager(NerdMartServiceInterface serviceInterface, DataStore dataStore) {
+  //region Constructors
+
+  public NerdMartServiceManager(NerdMartServiceInterface serviceInterface, DataStore dataStore, Scheduler scheduler) {
     mServiceInterface = serviceInterface;
     mDataStore = dataStore;
+    mScheduler = scheduler;
   }
 
+  //endregion Constructors
   //region Public methods
 
   public Observable<Boolean> authenticate(String username, String password) {
@@ -71,13 +77,6 @@ public class NerdMartServiceManager {
   }
 
   public Observable<Product> getProducts() {
-
-//    return getToken().flatMap(mServiceInterface::requestProducts)
-//        .doOnNext(mDataStore::setCachedProducts)
-//        .flatMap(Observable::from)
-//        .subscribeOn(Schedulers.io())
-//        .observeOn(AndroidSchedulers.mainThread());
-
     return getToken()
         .flatMap(mServiceInterface::requestProducts)
         .doOnNext(mDataStore::setCachedProducts)
