@@ -16,6 +16,7 @@
 package com.bignerdranch.android.nerdmart.inject;
 
 import com.bignerdranch.android.nerdmart.NerdMartAbstractActivity;
+import com.bignerdranch.android.nerdmart.NerdMartAbstractFragment;
 import dagger.Component;
 
 import javax.inject.Singleton;
@@ -26,5 +27,8 @@ import javax.inject.Singleton;
 @Singleton
 @Component(modules = { NerdMartApplicationModule.class })
 public interface NerdMartComponent {
+
   void inject(NerdMartAbstractActivity activity);
+  void inject(NerdMartAbstractFragment fragment);
+
 }

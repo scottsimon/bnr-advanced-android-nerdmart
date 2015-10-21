@@ -1,28 +1,27 @@
 package com.bignerdranch.android.nerdmart;
 
-import android.os.Bundle;
-import timber.log.Timber;
+import android.support.v4.app.Fragment;
 
 public class ProductsActivity extends NerdMartAbstractActivity {
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_products);
-//    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//    setSupportActionBar(toolbar);
+//  @Override
+//  protected void onCreate(Bundle savedInstanceState) {
+//    super.onCreate(savedInstanceState);
+//    setContentView(R.layout.activity_products);
+////    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+////    setSupportActionBar(toolbar);
+////
+////    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+////    fab.setOnClickListener(new View.OnClickListener() {
+////      @Override
+////      public void onClick(View view) {
+////        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+////            .setAction("Action", null).show();
+////      }
+////    });
 //
-//    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//    fab.setOnClickListener(new View.OnClickListener() {
-//      @Override
-//      public void onClick(View view) {
-//        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//            .setAction("Action", null).show();
-//      }
-//    });
-
-    Timber.i("injected: " + mNerdMartServiceInterface);
-  }
+//    Timber.i("injected: " + mNerdMartServiceInterface);
+//  }
 
 //  @Override
 //  public boolean onCreateOptionsMenu(Menu menu) {
@@ -45,4 +44,9 @@ public class ProductsActivity extends NerdMartAbstractActivity {
 //
 //    return super.onOptionsItemSelected(item);
 //  }
+
+  @Override
+  protected Fragment getFragment() {
+    return new ProductsFragment();
+  }
 }

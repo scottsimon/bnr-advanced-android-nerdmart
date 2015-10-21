@@ -17,7 +17,6 @@ package com.bignerdranch.android.nerdmart;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import com.bignerdranch.android.nerdmartservice.service.NerdMartServiceInterface;
 
 import javax.inject.Inject;
@@ -25,25 +24,16 @@ import javax.inject.Inject;
 /**
  * Created by scotts on 10/20/15.
  */
-public abstract class NerdMartAbstractActivity extends AppCompatActivity {
+public abstract class NerdMartAbstractFragment extends Fragment {
 
   @Inject
   NerdMartServiceInterface mNerdMartServiceInterface;
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    NerdMartApplication.component(this).inject(this);
-
-    setContentView(R.layout.activity_abstract_nerdmart);
-    if (savedInstanceState == null) {
-      getSupportFragmentManager().beginTransaction()
-          .add(R.id.activity_abstract_nerdmart_fragment_frame, getFragment())
-          .commit();
-    }
+    NerdMartApplication.component(getActivity()).inject(this);
   }
-
-  protected abstract Fragment getFragment();
 
 }
