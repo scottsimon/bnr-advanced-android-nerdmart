@@ -1,4 +1,11 @@
 <resources>
   <string name="app_name">NerdMart</string>
   <string name="action_settings">Settings</string>
+  <string name="loading_text">Loading</string>
+  <string name="auth_success_toast">Authentication Successful</string>
+  <string name="password_hint">password</string>
+  <string name="password_value">pizza</string>
+  <string name="login_text">login</string>
+  <string name="username_hint">username</string>
+  <string name="username_value">johnnydoe</string>
 </resources>

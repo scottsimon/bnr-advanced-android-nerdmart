@@ -32,9 +32,18 @@ public class ProductsFragment extends NerdMartAbstractFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
     super.onCreateView(inflater, container, savedInstanceState); // wha?? what happens to the returned View?
 
-    Timber.i("injected: " + mNerdMartServiceInterface);
     View view = inflater.inflate(R.layout.fragment_products, container, false);
+    updateUI();
     return view;
+  }
+
+  private void updateUI() {
+    addSubscription(mNerdMartServiceManager
+        .getProducts()
+        .compose(loadingTransformer()) // shows/hides progress dialog
+        .subscribe(products -> {
+          Timber.i("received products: " + products);
+        }));
   }
 
 }

@@ -16,10 +16,14 @@
 package com.bignerdranch.android.nerdmart.inject;
 
 import android.content.Context;
+import com.bignerdranch.android.nerdmart.model.DataStore;
+import com.bignerdranch.android.nerdmart.model.service.NerdMartServiceManager;
 import com.bignerdranch.android.nerdmartservice.service.NerdMartService;
 import com.bignerdranch.android.nerdmartservice.service.NerdMartServiceInterface;
 import dagger.Module;
 import dagger.Provides;
+
+import javax.inject.Singleton;
 
 /**
  * Created by scotts on 10/20/15.
@@ -36,6 +40,17 @@ public class NerdMartApplicationModule {
   @Provides
   NerdMartServiceInterface providesNerdMartServiceInterface() {
     return new NerdMartService();
+  }
+
+  @Provides
+  NerdMartServiceManager providesNerdMartServiceManager(NerdMartServiceInterface serviceInterface, DataStore dataStore) {
+    return new NerdMartServiceManager(serviceInterface, dataStore);
+  }
+
+  @Provides
+  @Singleton
+  DataStore providesDataStore() {
+    return new DataStore();
   }
 
 }
